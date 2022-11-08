@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `menu_items` (
   `name` text NOT NULL,
   `price` float NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `image` longblob
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -39,11 +39,11 @@ CREATE TABLE `menu_items` (
 --
 
 INSERT INTO `menu_items` (`name`, `price`, `id`, `image`) VALUES
-('Coffee', 5.5, 1, images/coffee-unsplach.jpg),
-('Iced Latte', 7.25, 2),
-('Espresso', 6.8, 3),
-('Grilled Cheese', 9.5, 4),
-('Biscuit', 3.25, 5);
+('Coffee', 5.5, 1, null),
+('Iced Latte', 7.25, 2, null),
+('Espresso', 6.8, 3, null),
+('Grilled Cheese', 9.5, 4, null),
+('Biscuit', 3.25, 5, null);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
