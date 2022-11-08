@@ -39,7 +39,7 @@ CREATE TABLE `menu_items` (
 --
 
 INSERT INTO `menu_items` (`name`, `price`, `id`, `image`) VALUES
-('Coffee', 5.5, 1,),
+('Coffee', 5.5, 1, images/coffee-unsplach.jpg),
 ('Iced Latte', 7.25, 2),
 ('Espresso', 6.8, 3),
 ('Grilled Cheese', 9.5, 4),
