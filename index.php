@@ -14,7 +14,7 @@
             color:#FFFFFF;
         }
         p {
-            font-size:1vw;
+            font-size:2vw;
         }
         h2 {
             color: #732761;
@@ -60,7 +60,7 @@
             }
         }
 
-        function amount(){
+        function amount(id){
             var chicken = document.getElementById("quan0").value;
             var pork = document.getElementById("quan1").value;
             var shrimp = document.getElementById("quan2").value;
@@ -200,9 +200,9 @@ if ($result->num_rows > 0) {
     {
         echo '<tr class = "box">';
         echo '<th id = "amount'.$row["itemID"].'"><script>document.writeln(makeSelect('.$row["itemID"].', 0, 10))</script></th>';
-        echo '<th>".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</th>';
-        echo '<th id = "price'.$row["itemID"].'">$" . $row["price"]. "</th>';
-        echo '<th><script>document.writeln(amount('.$row["price"].')</script></th>';
+        echo "<th id = 'name".$row["itemID"]."'> ".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</th>";
+        echo "<th id = 'price".$row["itemID"]."'>$" . $row["price"]. "</th>";
+        echo '<th><script>document.writeln(amount('.$row["itemID"].'))</script></th>';
         echo '</tr>';
     }
     echo "</table>";
