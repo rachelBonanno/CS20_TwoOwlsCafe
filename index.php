@@ -40,6 +40,10 @@
         .userInfo input {
             display: inline-block;
         }
+        table {
+            margin-right: auto;
+            margin-left: auto;
+        }
     </style>
 </head>
 
@@ -86,12 +90,20 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
 
     echo "<table>";
+    echo '<tr class = "box">';
+    echo "<th>Select Item</th>";
+    echo "<th>Item Name</th>";
+    echo "<th>Cost Each</th>";
+    echo "<th>Total Cost</th>";
+    echo "</tr>";
+
     while($row = $result->fetch_assoc())
     {
         echo '<tr class = "box">';
+        echo '<th>select</th>';
         echo "<th>".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</th>";
         echo "<th>$" . $row["price"]. "</th>";
-        echo '<th>select</th>';
+        echo '<th>total</th>';
         echo '</tr>';
     }
     echo "</table>";
