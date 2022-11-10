@@ -137,23 +137,35 @@
     <script>
         function makeSelect(name, minRange, maxRange) {
             var t = "";
-            t = "<select id ='"+ name + "' name='" + name + "' size='1' onchange='MyJavaScript(this)'>";
+            t = "<select id ='"+ name + "' name='" + name + "' size='1' onchange='MyJavaScript(this, name)'>";
             for (j = minRange; j<=maxRange; j++)
                 t += "<option value=" + j + ">" + j + "</option>";
             t += "</select>";
             return t;
         }
 
-        function MyJavaScript(dropdown)
-        {
+        function MyJavaScript(dropdown, name) {
             var option_value = dropdown.options[dropdown.selectedIndex].value;
             var option_text = dropdown.options[dropdown.selectedIndex].text;
             alert('The option value is "' + option_value + '"\nand the text is "' + option_text + '"');
-            return option_value;
+            createCookie(name, option_value, "10");
         }
-    </script>
 
-    }
+        function createCookie(name, value, days) {
+            var expires;
+
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toGMTString();
+            }
+            else {
+                expires = "";
+            }
+
+            document.cookie = escape(name) + "=" +
+                escape(value) + expires + "; path=/";
+        }
     </script>
 
     <p class="userInfo"><label>First Name:</label> <input type="text" name='fname'/></p>
@@ -203,10 +215,14 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc())
     {
         echo '<tr class = "box">';
-        echo '<td id = "amount'.$row["itemID"].'" name = "amount"><script>document.writeln(makeSelect("names", 0, 10))</script></td>';
+        echo '<td id = "amount'.$row["itemID"].'" name = "amount"><script>document.writeln(makeSelect("value'.$row["itemID"].'", 0, 10))</script></td>';
         echo "<td id = 'name".$row["itemID"]."'> ".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</td>";
         echo "<td id = 'price".$row["itemID"]."'>$" . $row["price"]. "</td>";
-        $num = $_REQUEST['names'];
+        $num = $_COOKIE["value".$row["itemID"]];
+        //$num= $_GET['option_value'];
+        echo '<td> ';
+        echo $num;
+        echo '</td>';
         echo '<td> $';
         echo ($num * $row["price"]);
         echo '</td>';
