@@ -14,7 +14,7 @@
             color:#FFFFFF;
         }
         p {
-            font-size:2vw;
+            font-size:1vw;
         }
         h2 {
             color: #732761;
@@ -60,23 +60,15 @@
             }
         }
 
-        function amount(id){
-            var chicken = document.getElementById("quan0").value;
-            var pork = document.getElementById("quan1").value;
-            var shrimp = document.getElementById("quan2").value;
-            var mooSui = document.getElementById("quan3").value;
-            var rice = document.getElementById("quan4").value;
-
-            document.getElementById("cost0").value = (chicken *
-                menuItems[0].cost.toFixed(2)).toFixed(2);
-            document.getElementById("cost1").value = (pork *
-                menuItems[1].cost.toFixed(2)).toFixed(2);
-            document.getElementById("cost2").value = (shrimp *
-                menuItems[2].cost.toFixed(2)).toFixed(2);
-            document.getElementById("cost3").value = (mooSui *
-                menuItems[3].cost.toFixed(2)).toFixed(2);
-            document.getElementById("cost4").value = (rice *
-                menuItems[4].cost.toFixed(2)).toFixed(2);
+        function amount(){
+            var price = 0;
+            var amount = 0;
+            for(var i=0;i<=5;i++) {
+                price = document.getElementById("price" + i).value;
+                amount = document.getElementById("amount" + i).value;
+                document.getElementById("cost" + i).value = (price *
+                    amount).toFixed(2);
+            }
         }
 
         function totals() {
@@ -140,7 +132,7 @@
 <script>
     function makeSelect(name, minRange, maxRange) {
         var t = "";
-        t = "<select id='"+ name + "' name='" + name + "' size='1'>";
+        t = "<select id ='"+ name + "' name='" + name + "' size='1'>";
         for (j = minRange; j<=maxRange; j++)
             t += "<option>" + j + "</option>";
         t += "</select>";
@@ -199,10 +191,10 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc())
     {
         echo '<tr class = "box">';
-        echo '<th id = "amount'.$row["itemID"].'"><script>document.writeln(makeSelect('.$row["itemID"].', 0, 10))</script></th>';
+        echo '<th id = "amount'.$row["itemID"].'" name = "amount'.$row["itemID"].'"><script>document.writeln(makeSelect('.$row["itemID"].', 0, 10))</script></th>';
         echo "<th id = 'name".$row["itemID"]."'> ".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</th>";
         echo "<th id = 'price".$row["itemID"]."'>$" . $row["price"]. "</th>";
-        echo '<th><script>document.writeln(amount('.$row["itemID"].'))</script></th>';
+        echo '<th><p class="cost" id="cost'.$row["itemID"].'">'.number_format((float)($_GET["amount".$row["itemID"]]*$row["price"]), 2, '.', '').'</p></th>';
         echo '</tr>';
     }
     echo "</table>";
