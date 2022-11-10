@@ -129,20 +129,32 @@
 </head>
 
 <body style="background-color: #9dd2fa;">
-<script>
-    function makeSelect(name, minRange, maxRange) {
-        var t = "";
-        t = "<select id ='"+ name + "' name='" + name + "' size='1'>";
-        for (j = minRange; j<=maxRange; j++)
-            t += "<option>" + j + "</option>";
-        t += "</select>";
-        return t;
-    }
-</script>
 <h1>Two Owls Cafe</h1>
 <em>Cafe Hours 7pm to 2pm Daily</em>
 <br /><br/>
 <form name="formster">
+
+    <script>
+        function makeSelect(name, minRange, maxRange) {
+            var t = "";
+            t = "<select id ='"+ name + "' name='" + name + "' size='1' onchange='MyJavaScript(this)'>";
+            for (j = minRange; j<=maxRange; j++)
+                t += "<option value=" + j + ">" + j + "</option>";
+            t += "</select>";
+            return t;
+        }
+
+        function MyJavaScript(dropdown)
+        {
+            var option_value = dropdown.options[dropdown.selectedIndex].value;
+            var option_text = dropdown.options[dropdown.selectedIndex].text;
+            alert('The option value is "' + option_value + '"\nand the text is "' + option_text + '"');
+            return option_value;
+        }
+    </script>
+
+    }
+    </script>
 
     <p class="userInfo"><label>First Name:</label> <input type="text" name='fname'/></p>
     <p class="userInfo"><label>Last Name*:</label>  <input type="text"  name='lname' /></p>
@@ -191,10 +203,13 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc())
     {
         echo '<tr class = "box">';
-        echo '<th id = "amount'.$row["itemID"].'" name = "amount'.$row["itemID"].'"><script>document.writeln(makeSelect('.$row["itemID"].', 0, 10))</script></th>';
-        echo "<th id = 'name".$row["itemID"]."'> ".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</th>";
-        echo "<th id = 'price".$row["itemID"]."'>$" . $row["price"]. "</th>";
-        echo '<th><p class="cost" id="cost'.$row["itemID"].'">'.number_format((float)($_GET["amount".$row["itemID"]]*$row["price"]), 2, '.', '').'</p></th>';
+        echo '<td id = "amount'.$row["itemID"].'" name = "amount"><script>document.writeln(makeSelect("names", 0, 10))</script></td>';
+        echo "<td id = 'name".$row["itemID"]."'> ".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</td>";
+        echo "<td id = 'price".$row["itemID"]."'>$" . $row["price"]. "</td>";
+        $num = $_REQUEST['names'];
+        echo '<td> $';
+        echo ($num * $row["price"]);
+        echo '</td>';
         echo '</tr>';
     }
     echo "</table>";
