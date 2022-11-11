@@ -46,10 +46,6 @@
         }
     </style>
     <script>
-        setInterval(getOrder, 10);
-        setInterval(amount, 10);
-        setInterval(totals, 10);
-
         function getOrder() {
             if (document.querySelector('input[value=pickup]').checked) {
                 document.getElementById("street").style.visibility = "hidden";
@@ -60,14 +56,11 @@
             }
         }
 
-        function amount(){
-            var price = 0;
-            var amount = 0;
+        function amount(name, price){
+            var amount = localStorage[name];
             for(var i=0;i<=5;i++) {
-                price = document.getElementById("price" + i).value;
-                amount = document.getElementById("amount" + i).value;
-                document.getElementById("cost" + i).value = (price *
-                    amount).toFixed(2);
+                cost = (price * amount).toFixed(2);
+                return cost;
             }
         }
 
@@ -125,6 +118,7 @@
                 }
                 new_window.document.write("<h2> Receipt </h2>");
             }
+
     </script>
 </head>
 
@@ -144,28 +138,30 @@
             return t;
         }
 
-        function MyJavaScript(dropdown, name) {
+        function MyJavaScript(dropdown, appletree) {
             var option_value = dropdown.options[dropdown.selectedIndex].value;
-            var option_text = dropdown.options[dropdown.selectedIndex].text;
-            alert('The option value is "' + option_value + '"\nand the text is "' + option_text + '"');
-            createCookie(name, option_value, "10");
+            //var option_text = dropdown.options[dropdown.selectedIndex].text;
+            //alert('The option value is "' + option_value + '"\nand the text is "' + option_text + '"');
+            //createCookie(name, option_value, "0.006");
+            localStorage[appletree] = option_value.toFixed(2);
+
         }
 
-        function createCookie(name, value, days) {
-            var expires;
-
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toGMTString();
-            }
-            else {
-                expires = "";
-            }
-
-            document.cookie = escape(name) + "=" +
-                escape(value) + expires + "; path=/";
-        }
+        // function createCookie(name, value, days) {
+        //     var expires;
+        //
+        //     if (days) {
+        //         var date = new Date();
+        //         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        //         expires = "; expires=" + date.toGMTString();
+        //     }
+        //     else {
+        //         expires = "";
+        //     }
+        //
+        //     document.cookie = escape(name) + "=" +
+        //         escape(value) + expires;
+        // }
     </script>
 
     <p class="userInfo"><label>First Name:</label> <input type="text" name='fname'/></p>
@@ -206,26 +202,20 @@ if ($result->num_rows > 0) {
 
     echo "<table>";
     echo '<tr class = "box">';
-    echo "<th>Select Item</th>";
     echo "<th>Item Name</th>";
     echo "<th>Cost Each</th>";
+    echo "<th>Select Item</th>";
     echo "<th>Total Cost</th>";
     echo "</tr>";
 
     while($row = $result->fetch_assoc())
     {
         echo '<tr class = "box">';
-        echo '<td id = "amount'.$row["itemID"].'" name = "amount"><script>document.writeln(makeSelect("value'.$row["itemID"].'", 0, 10))</script></td>';
         echo "<td id = 'name".$row["itemID"]."'> ".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</td>";
         echo "<td id = 'price".$row["itemID"]."'>$" . $row["price"]. "</td>";
-        $num = $_COOKIE["value".$row["itemID"]];
-        //$num= $_GET['option_value'];
-        echo '<td> ';
-        echo $num;
-        echo '</td>';
-        echo '<td> $';
-        echo ($num * $row["price"]);
-        echo '</td>';
+        echo '<td id = "amount'.$row["itemID"].'" name = "amount"><script>document.writeln(makeSelect("value'.$row["itemID"].'", 0, 10))</script></td>';
+        echo '<td id = "total'.$row["itemID"].'"><script>document.writeln(amount("value'.$row["itemID"].'"))</script></td>';
+
         echo '</tr>';
     }
     echo "</table>";
