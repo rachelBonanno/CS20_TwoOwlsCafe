@@ -46,23 +46,15 @@
         }
     </style>
     <script>
-        function getOrder() {
-            if (document.querySelector('input[value=pickup]').checked) {
-                document.getElementById("street").style.visibility = "hidden";
-                document.getElementById("city").style.visibility = "hidden";
-            } else {
-                document.getElementById("street").style.visibility = "visible";
-                document.getElementById("city").style.visibility = "visible";
-            }
-        }
-
-        function amount(name, price){
-            var amount = localStorage[name];
-            for(var i=0;i<=5;i++) {
-                cost = (price * amount).toFixed(2);
-                return cost;
-            }
-        }
+        // function getOrder() {
+        //     if (document.querySelector('input[value=pickup]').checked) {
+        //         document.getElementById("street").style.visibility = "hidden";
+        //         document.getElementById("city").style.visibility = "hidden";
+        //     } else {
+        //         document.getElementById("street").style.visibility = "visible";
+        //         document.getElementById("city").style.visibility = "visible";
+        //     }
+        // }
 
         function totals() {
             var arr = document.getElementsByName('cost');
@@ -83,41 +75,6 @@
             localStorage["total"] = totals.toFixed(2);
         }
 
-        function userInput() {
-            let x = document.forms["formster"]["lname"].value;
-            let y = document.forms["formster"]["phone"].value;
-            var subtotal = localStorage["subtotal"];
-            var date = new Date();
-            var current20 = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes()+20) + ":" + date.getSeconds();
-            var current40 = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes()+40) + ":" + date.getSeconds();
-
-
-            if (x == "" || (y.length != 7 && y.length != 10) || subtotal == 0) {
-                if (x == "") {
-                    alert("Last name must be filled out.");
-                }
-                if (y.length != 7 && y.length != 10) {
-                    alert("Invalid phone number entered.");
-                }
-                if (subtotal == 0) {
-                    alert("Please order something.");
-                }
-                return false;
-            } else {
-                alert("Thank you for ordering! :)");
-                new_window = window.open('receipt.html', '_blank');
-                new_window.document.write("<h2> Order Details </h2>");
-                if (document.querySelector('input[value=pickup]').checked) {
-                    new_window.document.write("<p> Order Type: Pickup </p>");
-                    new_window.document.write("<p> Your order will be ready in 20min. </p>");
-                    new_window.document.write("Pickup Time: " + current20);
-                } else {
-                    new_window.document.write("<p> Order Type: Delivery </p>");
-                    new_window.document.write("<p> Your order will be ready in 40min. </p>");
-                    new_window.document.write("Pickup Time: " + current40);
-                }
-                new_window.document.write("<h2> Receipt </h2>");
-            }
 
     </script>
 </head>
@@ -129,7 +86,13 @@
 <form name="formster">
 
     <script>
+        setInterval(makeSelect, 10)
+        setInterval(MyJavaScript, 10);
+        setInterval(amount, 10);
+
+
         function makeSelect(name, minRange, maxRange) {
+            //var name = "value" + num;
             var t = "";
             t = "<select id ='"+ name + "' name='" + name + "' size='1' onchange='MyJavaScript(this, name)'>";
             for (j = minRange; j<=maxRange; j++)
@@ -139,41 +102,65 @@
         }
 
         function MyJavaScript(dropdown, appletree) {
+            const price = ["0", "5.5", "7.25", "6.8", "9.5", "3.25"];
             var option_value = dropdown.options[dropdown.selectedIndex].value;
-            //var option_text = dropdown.options[dropdown.selectedIndex].text;
-            //alert('The option value is "' + option_value + '"\nand the text is "' + option_text + '"');
-            //createCookie(name, option_value, "0.006");
-            localStorage[appletree] = option_value.toFixed(2);
-
+            var cost = option_value * price[appletree];
+            //alert('The option value is "' + option_value + '"\nand the cost is "' + cost + '"');
+            var smiles = "smiles" + appletree;
+            localStorage[appletree] = option_value;
+            localStorage[smiles] = cost;
         }
 
-        // function createCookie(name, value, days) {
-        //     var expires;
-        //
-        //     if (days) {
-        //         var date = new Date();
-        //         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        //         expires = "; expires=" + date.toGMTString();
-        //     }
-        //     else {
-        //         expires = "";
-        //     }
-        //
-        //     document.cookie = escape(name) + "=" +
-        //         escape(value) + expires;
-        // }
-    </script>
+        function userInput() {
+            let z = document.forms["formster"]["fname"].value;
+            let x = document.forms["formster"]["lname"].value;
+            let y = document.forms["formster"]["instruct"].value;
 
-    <p class="userInfo"><label>First Name:</label> <input type="text" name='fname'/></p>
-    <p class="userInfo"><label>Last Name*:</label>  <input type="text"  name='lname' /></p>
-    <p id="street" class="userInfo address"><label>Street*:</label> <input type="text" name='street' /></p>
-    <p id="city" class="userInfo address"><label>City*:</label> <input type="text" name='city' /></p>
-    <p class="userInfo"><label>Phone*:</label> <input type="text"  name='phone' /></p>
-    <p>
-        <input type="radio"  name="p_or_d" value = "pickup" checked="checked"/>Pickup
-        <input type="radio"  name='p_or_d' value = 'delivery'/>
-        Delivery
-    </p>
+            var t = 0;
+            for(var i=0;i<=5;i++) {
+                j = "smiles" + i;
+                if(localStorage[j]) {
+                    t += (localStorage[j] * 1000);
+                }
+            }
+            t = t/1000;
+
+            // the total is always 0 doesn't change
+            alert('The total is ' + t);
+
+            var date = new Date();
+            var current15 = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes() + 15) + ":" + date.getSeconds();
+            //var current_15 = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes()-15) + ":" + date.getSeconds();
+
+            if (z == "" || x == "" || t == 0 || ((date.getHours() >= 18 && date.getMinutes() >= 45) && (date.getHours() >= 14 && date.getMinutes() >= 15))) {
+                if (z == "") {
+                    alert("First name must be filled out.");
+                }
+                if (x == "") {
+                    alert("Last name must be filled out.");
+                }
+                if (t == 0) {
+                    alert("Please order something.");
+                }
+                if ((date.getHours() >= 18 && date.getMinutes() >= 45) && (date.getHours() <= 14 && date.getMinutes() <= 15)) {
+                    alert("Cafe currently not-open for orders.");
+                }
+                return false;
+            } else {
+                alert("Thank you for ordering! :)");
+                window.open('reciet.php');
+                // new_window.document.write("<title>Two Owls Cafe</title>");
+                // new_window.document.write("<h2> Order Details </h2>");
+                // new_window.document.write("<p> Order Type: Pickup </p>");
+                // new_window.document.write("<p> Your order will be ready in 15min. </p>");
+                // new_window.document.write("Pickup Time: " + current15);
+                // new_window.document.write("<h2> Receipt </h2>");
+            }
+
+            localStorage.clear();
+
+        }
+    </script>
 <?php
 //establish connection info
 $server = "localhost";
@@ -205,16 +192,15 @@ if ($result->num_rows > 0) {
     echo "<th>Item Name</th>";
     echo "<th>Cost Each</th>";
     echo "<th>Select Item</th>";
-    echo "<th>Total Cost</th>";
+    //echo "<th>Total Cost</th>";
     echo "</tr>";
-
     while($row = $result->fetch_assoc())
     {
         echo '<tr class = "box">';
         echo "<td id = 'name".$row["itemID"]."'> ".$row["name"].'<br><img src="images/'.$row["itemID"].'-unsplash.jpg" height="100">'."</td>";
         echo "<td id = 'price".$row["itemID"]."'>$" . $row["price"]. "</td>";
-        echo '<td id = "amount'.$row["itemID"].'" name = "amount"><script>document.writeln(makeSelect("value'.$row["itemID"].'", 0, 10))</script></td>';
-        echo '<td id = "total'.$row["itemID"].'"><script>document.writeln(amount("value'.$row["itemID"].'"))</script></td>';
+        echo '<td id = "amount'.$row["itemID"].'" name = "amount"><script>document.writeln(makeSelect("'.$row["itemID"].'", 0, 10))</script></td>';
+        //echo set'<td id = "total'.$row["itemID"].'">$<script>document.writeln(amount('.$row["itemID"].'))</script></td>';
 
         echo '</tr>';
     }
@@ -229,14 +215,9 @@ else
 $conn->close();
 
 ?>
-    <p class="subtotal totalSection"><label>Subtotal</label>:
-        $ <input type="text" name='subtotal' id="subtotal" />
-    </p>
-    <p class="tax totalSection"><label>Mass tax 6.25%:</label>
-        $ <input type="text" name='tax' id="tax" />
-    </p>
-    <p class="total totalSection"><label>Total:</label> $ <input type="text" name='total' id="total" />
-    </p>
+    <p class="userInfo"><label>First Name*:</label> <input type="text" name='fname'/></p>
+    <p class="userInfo"><label>Last Name*:</label>  <input type="text"  name='lname' /></p>
+    <p class="userInfo"><label>Instructions:</label> <input type="text"  name='instruct' /></p>
 
     <input type="button" value="Submit Order" onclick="userInput()"/>
 </form>
