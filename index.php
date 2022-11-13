@@ -125,14 +125,17 @@
             }
             t = t/1000;
 
+            var tax = t * .0625;
+            var totalprice = t + tax;
+
             // the total is always 0 doesn't change
-            alert('The total is ' + t);
+            //alert('The total is ' + t);
 
             var date = new Date();
             var current15 = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes() + 15) + ":" + date.getSeconds();
             //var current_15 = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + " " + date.getHours() + ":" + (date.getMinutes()-15) + ":" + date.getSeconds();
 
-            if (z == "" || x == "" || t == 0 || ((date.getHours() >= 18 && date.getMinutes() >= 45) && (date.getHours() >= 14 && date.getMinutes() >= 15))) {
+            if (z == "" || x == "" || t == 0 || ((date.getHours() <= 18 && date.getMinutes() <= 45) && (date.getHours() >= 14 && date.getMinutes() >= 15))) {
                 if (z == "") {
                     alert("First name must be filled out.");
                 }
@@ -142,19 +145,18 @@
                 if (t == 0) {
                     alert("Please order something.");
                 }
-                if ((date.getHours() >= 18 && date.getMinutes() >= 45) && (date.getHours() <= 14 && date.getMinutes() <= 15)) {
+                if ((date.getHours() <= 18 && date.getMinutes() <= 45) && (date.getHours() >= 14 && date.getMinutes() >= 15)) {
                     alert("Cafe currently not-open for orders.");
                 }
                 return false;
             } else {
                 alert("Thank you for ordering! :)");
-                window.open('reciet.php');
-                // new_window.document.write("<title>Two Owls Cafe</title>");
-                // new_window.document.write("<h2> Order Details </h2>");
-                // new_window.document.write("<p> Order Type: Pickup </p>");
-                // new_window.document.write("<p> Your order will be ready in 15min. </p>");
-                // new_window.document.write("Pickup Time: " + current15);
-                // new_window.document.write("<h2> Receipt </h2>");
+                window.location.href="reciet.php?first=" + z + "&&last=" + x + "&&instructs=" + y + "&&pickup=" + current15  +
+                    "&&cost1=" + localStorage["smiles1"] + "&&cost2=" + localStorage["smiles2"] + "&&cost3=" + localStorage["smiles3"] +
+                    "&&cost4=" + localStorage["smiles4"] + "&&cost5=" + localStorage["smiles5"] +
+                    "&&amount1=" + localStorage["1"] + "&&amount2=" + localStorage["2"] + "&&amount3=" + localStorage["3"] +
+                    "&&amount4=" + localStorage["4"] + "&&amount5=" + localStorage["5"] +
+                    "&&total=" + t + "&&tax=" + tax + "&&price=" + totalprice;
             }
 
             localStorage.clear();
